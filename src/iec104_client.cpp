@@ -354,31 +354,29 @@ IEC104Client::sendData(vector<Datapoint*> datapoints,
 
     for (Datapoint* item_dp : datapoints)
     {
-        // Extract do_value before ingest — Reading takes ownership of item_dp
-        Datapoint* simpleValueDp = nullptr;
+        bool ingested = false;
+
+        // For data readings: extract do_value and ingest as label-named datapoint under iec104
         auto* subDps = item_dp->getData().getDpVec();
         if (subDps) {
             for (Datapoint* subDp : *subDps) {
                 if (subDp->getName() == "do_value") {
-                    simpleValueDp = new Datapoint("do_value", subDp->getData());
+                    std::vector<Datapoint*> points;
+                    points.push_back(new Datapoint(labels[i], subDp->getData()));
+                    m_iec104->ingest(assetName, points);
+                    ingested = true;
                     break;
                 }
             }
         }
 
-        // Ingest full structured reading under iec104 asset (iec104.<label>)
-        {
+        if (ingested) {
+            delete item_dp;
+        } else {
+            // Monitoring events (south_event) and quality updates go as-is
             std::vector<Datapoint*> points;
             points.push_back(item_dp);
             m_iec104->ingest(assetName, points);
-        }
-
-        // Ingest simple numeric reading under label asset (<label>.do_value)
-        // This enables Fledge graph and summary (Avg/Min/Max) per signal
-        if (simpleValueDp) {
-            std::vector<Datapoint*> simplePoints;
-            simplePoints.push_back(simpleValueDp);
-            m_iec104->ingest(labels[i], simplePoints);
         }
 
         i++;
