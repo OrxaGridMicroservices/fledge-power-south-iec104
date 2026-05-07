@@ -103,7 +103,7 @@ Datapoint* IEC104Client::m_createQualityUpdateForDataObject(std::shared_ptr<Data
 
     DatapointValue dpv(attributes, true);
 
-    return new Datapoint(dataDefinition->label, dpv);
+    return new Datapoint("data_object", dpv);
 }
 
 static bool isDataPointInMonitoringDirection(std::shared_ptr<DataExchangeDefinition> dp)
