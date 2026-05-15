@@ -342,44 +342,34 @@ Datapoint* IEC104Client::m_createDataObject(CS101_ASDU asdu, int64_t ioa, const 
 
     DatapointValue dpv(attributes, true);
 
-    return new Datapoint(dataname, dpv);
+    return new Datapoint("data_object", dpv);
 }
 
 void
 IEC104Client::sendData(vector<Datapoint*> datapoints,
                             const vector<std::string> labels)
 {
-    int i = 0;
-    const std::string& assetName = m_iec104->getAssetName();
+    std::map<std::string, std::vector<Datapoint*>> assetGroups;
+    std::vector<std::string> assetOrder;
 
-    for (Datapoint* item_dp : datapoints)
-    {
-        bool ingested = false;
+    for (size_t i = 0; i < datapoints.size(); i++) {
+        const std::string& label = labels[i];
+        size_t dashPos = label.find('-');
+        std::string assetName = (dashPos != std::string::npos) ? label.substr(0, dashPos) : label;
+        std::string paramName = (dashPos != std::string::npos) ? label.substr(dashPos + 1) : label;
 
-        // For data readings: extract do_value and ingest as label-named datapoint under iec104
-        auto* subDps = item_dp->getData().getDpVec();
-        if (subDps) {
-            for (Datapoint* subDp : *subDps) {
-                if (subDp->getName() == "do_value") {
-                    std::vector<Datapoint*> points;
-                    points.push_back(new Datapoint(labels[i], subDp->getData()));
-                    m_iec104->ingest(assetName, points);
-                    ingested = true;
-                    break;
-                }
-            }
+        if (assetGroups.find(assetName) == assetGroups.end()) {
+            assetOrder.push_back(assetName);
         }
 
-        if (ingested) {
-            delete item_dp;
-        } else {
-            // Monitoring events (south_event) and quality updates go as-is
-            std::vector<Datapoint*> points;
-            points.push_back(item_dp);
-            m_iec104->ingest(assetName, points);
-        }
+        Datapoint* paramDp = new Datapoint(paramName, datapoints[i]->getData());
+        delete datapoints[i];
 
-        i++;
+        assetGroups[assetName].push_back(paramDp);
+    }
+
+    for (const std::string& assetName : assetOrder) {
+        m_iec104->ingest(assetName, assetGroups[assetName]);
     }
 }
 
