@@ -354,9 +354,9 @@ IEC104Client::sendData(vector<Datapoint*> datapoints,
 
     for (size_t i = 0; i < datapoints.size(); i++) {
         const std::string& label = labels[i];
-        size_t dashPos = label.rfind('-');
-        std::string assetName = (dashPos != std::string::npos) ? label.substr(0, dashPos) : label;
-        std::string paramName = (dashPos != std::string::npos) ? label.substr(dashPos + 1) : label;
+        size_t sepPos = label.find('_');
+        std::string assetName = (sepPos != std::string::npos) ? label.substr(0, sepPos) : label;
+        std::string paramName = (sepPos != std::string::npos) ? label.substr(sepPos + 1) : label;
 
         if (assetGroups.find(assetName) == assetGroups.end()) {
             assetOrder.push_back(assetName);
