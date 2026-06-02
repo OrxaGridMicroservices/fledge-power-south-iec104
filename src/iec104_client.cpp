@@ -345,15 +345,21 @@ void
 IEC104Client::sendData(vector<Datapoint*> datapoints,
                             const vector<std::string> labels)
 {
-    int i = 0;
+    std::string assetName = m_iec104->getAssetName();
+    std::vector<Datapoint*> assetDatapoints;
 
-    for (Datapoint* item_dp : datapoints)
-    {
-        std::vector<Datapoint*> points;
-        points.push_back(item_dp);
+    for (size_t i = 0; i < datapoints.size(); i++) {
+        const std::string& label = labels[i];
+        size_t sepPos = label.find('_');
+        std::string paramName = (sepPos != std::string::npos) ? label.substr(sepPos + 1) : label;
 
-        m_iec104->ingest(labels.at(i), points);
-        i++;
+        Datapoint* paramDp = new Datapoint(paramName, datapoints[i]->getData());
+        delete datapoints[i];
+        assetDatapoints.push_back(paramDp);
+    }
+
+    if (!assetDatapoints.empty()) {
+        m_iec104->ingest(assetName, assetDatapoints);
     }
 }
 
