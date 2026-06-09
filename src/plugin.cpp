@@ -157,6 +157,18 @@ static const char *default_config = QUOTE({
         "type" : "string",
         "default" : "OrxaGrid",
         "readonly" : "true"
+    },
+    "device_name" : {
+        "description" : "Name of device",
+        "type" : "string",
+        "default" : "",
+        "readonly" : "true"
+    },
+    "protocol" : {
+        "description" : "Name of protocol",
+        "type" : "string",
+        "default" : "iec_104",
+        "readonly" : "true"
     }
 });
 
