@@ -38,12 +38,6 @@ static const char *default_config = QUOTE({
         "order" : "1",
         "mandatory" : "true"
     },
-    "manufacturer": {
-        "description": "Manufacturer of the device",
-        "type": "string",
-        "default": "OrxaGrid",
-        'readonly': 'true'
-    },
     "protocol_stack" : {
         "description" : "protocol stack parameters",
         "type" : "JSON",
@@ -157,7 +151,13 @@ static const char *default_config = QUOTE({
                 ]
             }      
         })
-    }
+    },
+    "manufacturer": {
+        "description": "Manufacturer of the device",
+        "type": "string",
+        "default": "OrxaGrid",
+        "readonly": "true"
+    },
 });
 
 

@@ -71,7 +71,13 @@ static const char *default_config = QUOTE({
         "displayName" : "TLS parameters",
         "order" : "5",
         "default" : TLS_DEF
-    }
+    },
+    "manufacturer": {
+        "description": "Manufacturer of the device",
+        "type": "string",
+        "default": "OrxaGrid",
+        "readonly": "true"
+    },
 });
 
 TEST(IEC104, PluginInit)
