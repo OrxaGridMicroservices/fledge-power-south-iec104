@@ -72,11 +72,11 @@ static const char *default_config = QUOTE({
         "order" : "5",
         "default" : TLS_DEF
     },
-    "manufacturer": {
-        "description": "Manufacturer of the device",
-        "type": "string",
-        "default": "OrxaGrid",
-        "readonly": "true"
+    "manufacturer" : {
+        "description" : "Manufacturer of the device",
+        "type" : "string",
+        "default" : "OrxaGrid",
+        "readonly" : "true"
     }
 });
 

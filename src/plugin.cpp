@@ -152,11 +152,11 @@ static const char *default_config = QUOTE({
             }      
         })
     },
-    "manufacturer": {
-        "description": "Manufacturer of the device",
-        "type": "string",
-        "default": "OrxaGrid",
-        "readonly": "true"
+    "manufacturer" : {
+        "description" : "Manufacturer of the device",
+        "type" : "string",
+        "default" : "OrxaGrid",
+        "readonly" : "true"
     }
 });
 
