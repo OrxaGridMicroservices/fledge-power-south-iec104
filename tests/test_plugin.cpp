@@ -77,7 +77,7 @@ static const char *default_config = QUOTE({
         "type": "string",
         "default": "OrxaGrid",
         "readonly": "true"
-    },
+    }
 });
 
 TEST(IEC104, PluginInit)
