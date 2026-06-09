@@ -38,6 +38,12 @@ static const char *default_config = QUOTE({
         "order" : "1",
         "mandatory" : "true"
     },
+    "manufacturer": {
+        "description": "Manufacturer of the device",
+        "type": "string",
+        "default": "OrxaGrid",
+        'readonly': 'true'
+    },
     "protocol_stack" : {
         "description" : "protocol stack parameters",
         "type" : "JSON",
@@ -151,25 +157,7 @@ static const char *default_config = QUOTE({
                 ]
             }      
         })
-    },
-    "manufacturer": {
-        "description": "Manufacturer of the device",
-        "type": "string",
-        "default": "OrxaGrid",
-        'readonly': 'true'
-        },
-    "device_name": { 
-        "description": "Name of device",
-        "type": "string",
-        "default": "",
-        'readonly': 'true'
-        },
-    "protocol": { 
-        "description": "Name of protocol",
-        "type": "string",
-        "default": "iec_104",
-        'readonly': 'true'
-        }
+    }
 });
 
 
