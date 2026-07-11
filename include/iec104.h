@@ -30,6 +30,7 @@ public:
     ~IEC104() = default;
 
     void setAssetName(const std::string& asset) { m_asset = asset; }
+    const std::string& getAssetName() const { return m_asset; }
     void setJsonConfig(const std::string& stack_configuration,
                               const std::string& msg_configuration,
                               const std::string& tls_configuration);
