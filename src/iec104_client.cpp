@@ -345,21 +345,15 @@ void
 IEC104Client::sendData(vector<Datapoint*> datapoints,
                             const vector<std::string> labels)
 {
-    std::string assetName = m_iec104->getAssetName();
-    std::vector<Datapoint*> assetDatapoints;
+    int i = 0;
 
-    for (size_t i = 0; i < datapoints.size(); i++) {
-        const std::string& label = labels[i];
-        size_t sepPos = label.find('_');
-        std::string paramName = (sepPos != std::string::npos) ? label.substr(sepPos + 1) : label;
+    for (Datapoint* item_dp : datapoints)
+    {
+        std::vector<Datapoint*> points;
+        points.push_back(item_dp);
 
-        Datapoint* paramDp = new Datapoint(paramName, datapoints[i]->getData());
-        delete datapoints[i];
-        assetDatapoints.push_back(paramDp);
-    }
-
-    if (!assetDatapoints.empty()) {
-        m_iec104->ingest(assetName, assetDatapoints);
+        m_iec104->ingest(labels.at(i), points);
+        i++;
     }
 }
 
@@ -448,10 +442,13 @@ IEC104Client::sendSouthMonitoringEvent(bool connxStatus, bool giStatus)
     Datapoint* southEvent = new Datapoint("south_event", dpv);
 
     vector<Datapoint*> datapoints;
+    vector<string> labels;
 
     datapoints.push_back(southEvent);
 
-    m_iec104->ingest(m_config->GetConnxStatusSignal(), datapoints);
+    labels.push_back(m_config->GetConnxStatusSignal());
+
+    sendData(datapoints, labels);
 }
 
 void

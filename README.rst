@@ -5,7 +5,7 @@ IEC104 C/C++ South plugin
 A simple asynchronous IEC104 plugin that pulls data from a server and sends 
 it to Fledge.
 
-To build this plugin, you will need the lib60870 library installed on your environment.
+To build this plugin, you will need the lib60870 library installed on your environment
 as described below.
 
 You also need to have Fledge installed from the source code, not from the 
@@ -25,7 +25,7 @@ https://github.com/mz-automation/lib60870
   $ export LIB_104=`pwd`
 
 As shown above, you need a $LIB_104 env var set to the source tree of the 
-library..
+library.
 
 Then, you can build lib60870 with:
 
